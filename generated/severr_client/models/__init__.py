@@ -24,30 +24,13 @@
 
 from __future__ import absolute_import
 
-import os
-import sys
-import unittest
-
-import severr_client
-from severr_client.rest import ApiException
-from severr_client.models.stack_trace_line import StackTraceLine
-
-
-class TestStackTraceLine(unittest.TestCase):
-    """ StackTraceLine unit test stubs """
-
-    def setUp(self):
-        pass
-
-    def tearDown(self):
-        pass
-
-    def testStackTraceLine(self):
-        """
-        Test StackTraceLine
-        """
-        model = severr_client.models.stack_trace_line.StackTraceLine()
-
-
-if __name__ == '__main__':
-    unittest.main()
+# import models into model package
+from .app_event import AppEvent
+from .custom_data import CustomData
+from .custom_double_data import CustomDoubleData
+from .custom_string_data import CustomStringData
+from .error import Error
+from .inner_stack_trace import InnerStackTrace
+from .stack_trace_line import StackTraceLine
+from .stack_trace_lines import StackTraceLines
+from .stacktrace import Stacktrace

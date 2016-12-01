@@ -1,4 +1,4 @@
-# IO.Severr.EventsApi
+# severr_client.EventsApi
 
 All URIs are relative to *https://www.severr.io/api/v1*
 
@@ -17,13 +17,13 @@ Submit an application event or error to Severr
 ### Example 
 ```python
 import time
-import IO.Severr
-from IO.Severr.rest import ApiException
+import severr_client
+from severr_client.rest import ApiException
 from pprint import pprint
 
 # create an instance of the API class
-api_instance = IO.Severr.EventsApi()
-data = IO.Severr.AppEvent() # AppEvent | Event to submit
+api_instance = severr_client.EventsApi()
+data = severr_client.AppEvent() # AppEvent | Event to submit
 
 try: 
     # Submit an application event or error to Severr

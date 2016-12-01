@@ -22,32 +22,32 @@
     limitations under the License.
 """
 
-from __future__ import absolute_import
-
-import os
 import sys
-import unittest
+from setuptools import setup, find_packages
 
-import severr_client
-from severr_client.rest import ApiException
-from severr_client.models.stack_trace_line import StackTraceLine
+NAME = "severr"
+VERSION = "1.0.0"
 
+# To install the library, run the following
+#
+# python setup.py install
+#
+# prerequisite: setuptools
+# http://pypi.python.org/pypi/setuptools
 
-class TestStackTraceLine(unittest.TestCase):
-    """ StackTraceLine unit test stubs """
+REQUIRES = ["urllib3 >= 1.15", "six >= 1.10", "certifi", "python-dateutil"]
 
-    def setUp(self):
-        pass
-
-    def tearDown(self):
-        pass
-
-    def testStackTraceLine(self):
-        """
-        Test StackTraceLine
-        """
-        model = severr_client.models.stack_trace_line.StackTraceLine()
-
-
-if __name__ == '__main__':
-    unittest.main()
+setup(
+    name="Severr",
+    version="1.0",
+    description="Severr API",
+    author_email="",
+    url="",
+    keywords=["Swagger", "Severr API"],
+    install_requires=REQUIRES,
+    packages=find_packages(),
+    include_package_data=True,
+    long_description="""\
+    Get your application events and errors to Severr via the *Severr API*.
+    """
+)
