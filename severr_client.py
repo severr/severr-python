@@ -23,18 +23,23 @@ from __future__ import absolute_import
 import sys
 import os
 import re
+import time
 
 # python 2 and python 3 compatibility library
 from six import iteritems
 
-from severr_client import AppEvent
+from severr_client import api_client
 from severr_client.apis import EventsApi
 
 class SeverrClient(object):
+    """
+    Description of class
+    """
+
     def __init__(self, api_key):
         self.api_key = api_key
 
-    def createAppEvent(self, classification, eventType, eventMessage):
+    def createAppEvent(self, classification, eventType, eventMessage): #Default None the arguments if they're not required?
 
         if classification is None: classification = "Error";
         if eventType  is None: eventType = 'unknown';
@@ -56,8 +61,8 @@ class SeverrClient(object):
             appEvent.contextAppOS = self.context_app_os
             appEvent.contextAppOSVersion = self.context_app_os_version
 
-        if (typeof appEvent.contextDataCenter === 'undefined') appEvent.contextDataCenter = _this.contextDataCenter;
-        if (typeof appEvent.contextDataCenterRegion  === 'undefined') appEvent.contextDataCenterRegion = _this.contextDataCenterRegion;
+        if appEvent.contextDataCenter is None: appEvent.contextDataCenter = self.contextDataCenter;
+        if appEvent.contextDataCenterRegion  is None: appEvent.contextDataCenterRegion = _this.contextDataCenterRegion;
 
-        if (typeof appEvent.eventTime === 'undefined') appEvent.eventTime = (new Date()).getTime();
+        if appEvent.eventTime is None: appEvent.eventTime = time.gmtime() * 1000; #Confirm if this is correct form of output
         return appEvent
