@@ -63,28 +63,29 @@ class Logger(object):
         """
         
         """
-        client = SeverrClient("ca6b942a89e04069ec96fa2b3438efb310995233724595",
+        client = SeverrClient("eefea6e9b269190715181109c44a7a0810905114236106",
                               "http://ec2-52-91-176-104.compute-1.amazonaws.com/api/v1", "1.0", "development",
                               "RMachine", "Win10", "10.10", "datacenter", "Datacenter region")
 
+
         exc_info = sys.exc_info()
-        excevent = None  # Very C type declaration, might not need it if python doesn't consider the for scoped; I can't remember
-
-        # Below taken from: https://docs.python.org/2/library/sys.html
-        # "" Since most functions don’t need access to the
-        # traceback, the best solution is to use something like exctype, value = sys.exc_info()[:2] to extract only
-        # the exception type and value. If you do need the traceback, make sure to delete it after use (best done
-        # with a try ... finally statement) or to call exc_info() in a function that does not itself handle an
-        # exception. ""
-        type, value = exc_info[:2]
         try:
-            excevent = client.create_new_app_event(message, str(type), str(value))
-        finally:
-            del type
-            del value
 
-        excevent.event_stacktrace = EventTraceBuilder.get_event_traces(exc_info)
-        client.send_event(excevent)  # use async method when implemented
+            excevent = None  # Very C type declaration, might not need it if python doesn't consider the for scoped; I can't remember
+
+            # Below taken from: https://docs.python.org/2/library/sys.html
+            # "" Since most functions don’t need access to the
+            # traceback, the best solution is to use something like exctype, value = sys.exc_info()[:2] to extract only
+            # the exception type and value. If you do need the traceback, make sure to delete it after use (best done
+            # with a try ... finally statement) or to call exc_info() in a function that does not itself handle an
+            # exception. ""
+            type, value = exc_info[:2]
+            excevent = client.create_new_app_event(message, str(type), str(value))
+
+            excevent.event_stacktrace = EventTraceBuilder.get_event_traces(exc_info)
+            client.send_event(excevent)  # use async method when implemented
+        finally:
+            del exc_info
 
 
 class SeverrClient(object):

@@ -42,23 +42,29 @@ class EventTraceBuilder(object):
         """
 
         trace = Stacktrace()
-        if exc_info is None: exc_info = sys.exc_info()
+        try:
+            if exc_info is None: exc_info = sys.exc_info()
 
-        self.add_stack_trace(trace, exc_info)
-        return trace
+            self.add_stack_trace(trace, exc_info)
+            return trace
+        finally:
+            del exc_info
 
     @classmethod
     def add_stack_trace(self, trace_list, exc_info=None):
         """
         """
-        if exc_info is None: exc_info = sys.exc_info()
-        newTrace = InnerStackTrace()
+        try:
+            if exc_info is None: exc_info = sys.exc_info()
+            newTrace = InnerStackTrace()
 
-        type, value, tb = exc_info
-        newTrace.trace_lines = self.get_event_tracelines(tb)
-        newTrace.type = str(type)
-        newTrace.message = str(value)
-        trace_list.append(newTrace)
+            type, value, tb = exc_info
+            newTrace.trace_lines = self.get_event_tracelines(tb)
+            newTrace.type = str(type)
+            newTrace.message = str(value)
+            trace_list.append(newTrace)
+        finally:
+            del exc_info
 
     @classmethod
     def get_event_tracelines(self, tb):
