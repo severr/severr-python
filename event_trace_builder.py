@@ -93,19 +93,3 @@ class EventTraceBuilder(object):
      
 
 
-def main(argv=None):#Test Main, to be removed
-    if argv is None:
-        argv = sys.argv
-    
-    try:
-        x = 2/0
-    except:
-        trace = sys.exc_info()[2]
-        for filename, line, func, text in traceback.extract_tb(trace):
-            print str(text)
-            
-
-
-if __name__ == "__main__":
-    main()
-#    sys.exit(main())

@@ -58,7 +58,7 @@ class Logger(object):
         """
         
         """
-        client = SeverrClient()
+        client = SeverrClient("ca6b942a89e04069ec96fa2b3438efb310995233724595", "https://severr.io/api/v1/", "1.0", "development", "RMachine", "Win10", "10.10", "datacenter", "Datacenter region")
         excinfo = sys.exc_info()
         excevent = None #Very C type declaration, might not need it if python doesn't consider the for scoped; I can't remember
 
