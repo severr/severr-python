@@ -44,24 +44,21 @@ class Logger(object):
     The public facing class that will log errors.
 
     A use case would be like:
-    import severr_client
-
-    ...
-
-    l = Logger()
-
-    ...
-
-    try:
-        ...
-    except:
-        l.log("Optional Error String")
+    >>>import severr_client
+    >>>...
+    >>>l = Logger()
+    >>>...
+    >>>try:
+    >>>   ...
+    >>>except:
+    >>>   l.log("Optional Error String")
     """
 
     def log(self, message=None, classification="Error"):
         """
         
         """
+        #consider a configuration file for later. Removed my personal data for pushes for now.
         client = SeverrClient("ca6b942a89e04069ec96fa2b3438efb310995233724595",
                               "http://ec2-52-91-176-104.compute-1.amazonaws.com/api/v1", "1.0", "development",
                               "RMachine", "Win10", "10.10", "datacenter", "Datacenter region")
@@ -69,17 +66,11 @@ class Logger(object):
 
         exc_info = sys.exc_info()
         try:
-            # Below taken from: https://docs.python.org/2/library/sys.html
-            # "" Since most functions don’t need access to the
-            # traceback, the best solution is to use something like exctype, value = sys.exc_info()[:2] to extract only
-            # the exception type and value. If you do need the traceback, make sure to delete it after use (best done
-            # with a try ... finally statement) or to call exc_info() in a function that does not itself handle an
-            # exception. ""
             type, value = exc_info[:2]
             excevent = client.create_new_app_event(classification, str(type), str(value))
 
             excevent.event_stacktrace = EventTraceBuilder.get_event_traces(exc_info)
-            client.send_event(excevent)  # use async method when implemented
+            client.send_event_async(excevent)  # use async method when implemented
         finally:
             del exc_info
 
@@ -106,10 +97,6 @@ class SeverrClient(object):
                  context_env_hostname=None,
                  context_appos=None, context_appos_version=None, context_datacenter=None,
                  context_datacenter_region=None):
-
-        # Populate default appmanager values. The C# code uses ConfigurationManager to parse and format the global App.config file.Haven't found anywhere in Python like that yet
-        # Configuration.py? But that's an instanced class. Does it get the details from wherever they are stored for me? I need to put my API key somewhere.
-        # ANSWER: Don't worry about the configuration manager. That's a C# only thing. Let's just go with the constructor like it is here.
 
         self.api_Key = api_key
 
@@ -141,11 +128,23 @@ class SeverrClient(object):
         self.fill_defaults(app_event)
         self.events_api.events_post(app_event)
 
+    def async_callback(self, response):
+        """
+        Call backmethod for the send_event_async function. Currently outputs nothing, can enable pr
+
+        :param response message returned after the async call is completed.
+        """
+
+        #print response
+
     def send_event_async(self, app_event):
         """
         """
 
-        raise NotImplementedError("Method not implemented currently.")
+        self.fill_defaults(app_event)
+        self.events_api.events_post(app_event, callback=self.async_callback)
+
+
 
     def fill_defaults(self, app_event):
         if app_event.api_key is None: app_event.apiKey = self.api_Key

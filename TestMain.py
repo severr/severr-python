@@ -13,7 +13,7 @@ def main(argv=None):#Test Main, to be removed
 
     l = Logger()
     try:
-        x = 2/0
+        raise ArithmeticError
     except:
         l.log("Test bug")
         
