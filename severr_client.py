@@ -63,7 +63,7 @@ class Logger(object):
         """
         
         """
-        client = SeverrClient("eefea6e9b269190715181109c44a7a0810905114236106",
+        client = SeverrClient("ca6b942a89e04069ec96fa2b3438efb310995233724595",
                               "http://ec2-52-91-176-104.compute-1.amazonaws.com/api/v1", "1.0", "development",
                               "RMachine", "Win10", "10.10", "datacenter", "Datacenter region")
 
