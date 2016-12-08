@@ -68,6 +68,20 @@ class event_trace_builder(object):
         stacklines.append(line)
         return stacklines
 
+    def format_name(self, name):
+        """
+        """
+
+        raise NotImplementedError("Fuction not Implemented currently")
+
+    def is_exc_info_tuple(self, exc_info):
+        """
+        """
+
+        raise NotImpementedError("Fuction not Implemented currently")
+     
+
+
 def main(argv=None):#Test Main, to be removed
     if argv is None:
         argv = sys.argv
