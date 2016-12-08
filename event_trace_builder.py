@@ -51,14 +51,13 @@ class EventTraceBuilder(object):
     def add_stack_trace(self, trace_list, exc_info=None):
         """
         """
-
-        if exc_info is None: exc_info = sys.exc_info
+        if exc_info is None: exc_info = sys.exc_info()
         newTrace = InnerStackTrace()
 
-        for type, value, tb in exc_info:
-            newTrace.trace_lines = self.get_event_tracelines(tb)
-            newTrace.type = str(type)
-            newTrace.message = str(value)
+        type, value, tb = exc_info
+        newTrace.trace_lines = self.get_event_tracelines(tb)
+        newTrace.type = str(type)
+        newTrace.message = str(value)
         trace_list.append(newTrace)
 
     @classmethod
@@ -67,14 +66,14 @@ class EventTraceBuilder(object):
         """
 
         stacklines = StackTraceLines()
-        line = StackTraceLine()
+        st_line = StackTraceLine()
 
-        for filename, line, func, text in traceback.extract_tb(trace):
-            line.file = str(filename)
-            line.line = line
-            line.function = str(func)
+        for filename, line, func, text in traceback.extract_tb(tb):
+            st_line.file = str(filename)
+            st_line.line = line
+            st_line.function = str(func)
 
-        stacklines.append(line)
+        stacklines.append(st_line)
         return stacklines
 
     @classmethod
