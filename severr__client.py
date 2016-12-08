@@ -31,7 +31,6 @@ from six import iteritems
 
 from severr_client import ApiClient
 from severr_client import EventsApi
-from severr_client import api_client  # This is the circular import I think?
 from severr_client.apis import events_api
 from severr_client.models import *
 from event_trace_builder import EventTraceBuilder
@@ -70,9 +69,6 @@ class Logger(object):
 
         exc_info = sys.exc_info()
         try:
-
-            excevent = None  # Very C type declaration, might not need it if python doesn't consider the for scoped; I can't remember
-
             # Below taken from: https://docs.python.org/2/library/sys.html
             # "" Since most functions don’t need access to the
             # traceback, the best solution is to use something like exctype, value = sys.exc_info()[:2] to extract only
@@ -169,11 +165,3 @@ class SeverrClient(object):
         if app_event.event_time is None: app_event.event_time = time.gmtime() * 1000  # Confirm if this is correct form of output
         # ANSWER: This is not correct as it doesn't offer millisecond granulatity
         return app_event
-
-
-if __name__ == '__main__':
-    l = Logger()
-    try:
-        1/0
-    except Exception as err:
-        l.log("test exception 1")

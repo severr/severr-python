@@ -83,7 +83,7 @@ class EventTraceBuilder(object):
         return stacklines
 
     @classmethod
-    def format_name(self, name):
+    def format_error_name(self, name):
         """
         """
 
@@ -94,7 +94,7 @@ class EventTraceBuilder(object):
         """
         """
 
-        raise NotImpementedError("Method not implemented currently.")
+        raise NotImplementedError("Method not implemented currently.")
      
 
 

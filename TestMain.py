@@ -1,9 +1,9 @@
-
+﻿
 import sys
 import os
 import re
 
-from severr_client import Logger
+from severr__client import Logger
 
 
 
