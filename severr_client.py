@@ -25,14 +25,14 @@ import sys
 import os
 import re
 import time
-import event_trace_builder
 
 # python 2 and python 3 compatibility library
 from six import iteritems
 
-from severr_client import api_client #import isn't catching? Check this import
+#from severr_client import api_client #This is the circular import I think?
 from severr_client.apis import events_api
 from severr_client.models import *
+from event_trace_builder import EventTraceBuilder
 
 
 class Logger(object):
