@@ -59,7 +59,7 @@ class Logger(object):
         l.log("Optional Error String")
     """
 
-    def log(self, message=None):
+    def log(self, message=None, classification="Error"):
         """
         
         """
@@ -80,7 +80,7 @@ class Logger(object):
             # with a try ... finally statement) or to call exc_info() in a function that does not itself handle an
             # exception. ""
             type, value = exc_info[:2]
-            excevent = client.create_new_app_event(message, str(type), str(value))
+            excevent = client.create_new_app_event(classification, str(type), str(value))
 
             excevent.event_stacktrace = EventTraceBuilder.get_event_traces(exc_info)
             client.send_event(excevent)  # use async method when implemented
