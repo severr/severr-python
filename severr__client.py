@@ -59,9 +59,7 @@ class Logger(object):
         
         """
         #consider a configuration file for later. Removed my personal data for pushes for now.
-        client = SeverrClient("ca6b942a89e04069ec96fa2b3438efb310995233724595",
-                              "http://ec2-52-91-176-104.compute-1.amazonaws.com/api/v1", "1.0", "development",
-                              "RMachine", "Win10", "10.10", "datacenter", "Datacenter region")
+        client = SeverrClient()
 
 
         exc_info = sys.exc_info()
@@ -130,7 +128,7 @@ class SeverrClient(object):
 
     def async_callback(self, response):
         """
-        Call backmethod for the send_event_async function. Currently outputs nothing, can enable pr
+        Call backmethod for the send_event_async function. Currently outputs nothing, can enable printing.
 
         :param response message returned after the async call is completed.
         """
