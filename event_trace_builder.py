@@ -25,42 +25,62 @@ import re
 import traceback
 
 from severr_client.models import *
-
-
-
-def main(argv=None):#Test Main
-    if argv is None:
-        argv = sys.argv
-
-
-
-
-if __name__ == "__main__":
-    sys.exit(main())
-
+from six import iteritems
 
 class event_trace_builder(object):
     """
     description of class
     """
-    
-    def __init__(self):#Might not need init
-        return NotImplemented
 
-    def getEventTraces(self, exception):
-        if exception is None: return None
-        trace = stacktrace()
-        addStackTrace(self, trace, exception)
+    def get_event_traces(self):
+        """
+        """
+
+        trace = stacktrace()#I don't see it inheriting from any list in the swagger code. Confirm?
+        einfo = sys.exc_info()
+        add_stack_trace(self, trace, einfo)
         return trace
 
-    def addStackTrace(self, traceList, exception):
+    def add_stack_trace(self, trace_list, exc_info=None):
+        """
+        """
+
+        if exc_info is None: exc_info = sys.exc_info
         newTrace = inner_stack_trace()
-        catchingmethod #Reflection for calling method
 
-        newTrace.trace_lines = getEventTraceLines(self, exception, catchingmethod) #Continue on, need reflection and to get the error name
-        #Discusss arbreak lines 133-176 to put in exception error stack
+        newTrace.trace_lines = get_event_tracelines(self, exc_info[2])
+        newTrace.type = str(exc_info[0])
+        newTrace.message = str(exc_info[1])
+        trace_list.append(newTrace)
 
-        return NotImplemented
+    def get_event_tracelines(self, tb):
+        """
+        """
 
-    def getEventTraceLines(self, exception, catchingMethod):
-        return NotImplemented
+        stacklines = stack_trace_lines()#I don't see it inheriting from any list in the swagger code. Confirm?
+        line = stack_trace_line()
+
+        for filename, line, func, text in traceback.extract_tb(trace):
+            line.file = str(filename)
+            line.line = line
+            line.fuction = str(func)
+
+        stacklines.append(line)
+        return stacklines
+
+def main(argv=None):#Test Main, to be removed
+    if argv is None:
+        argv = sys.argv
+    
+    try:
+        x = 2/0
+    except:
+        trace = sys.exc_info()[2]
+        for filename, line, func, text in traceback.extract_tb(trace):
+            print str(text)
+            
+
+
+if __name__ == "__main__":
+    main()
+#    sys.exit(main())
