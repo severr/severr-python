@@ -34,6 +34,8 @@ from severr_client.apis import events_api
 from severr_client.models import *
 from event_trace_builder import EventTraceBuilder
 
+#http://stackoverflow.com/questions/9252543/importerror-cannot-import-name-x Reformat like the last answer? 
+
 
 class Logger(object):
     """
