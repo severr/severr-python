@@ -18,6 +18,7 @@
 
 
 from __future__ import absolute_import #Only seems to matter in py 2.5? http://stackoverflow.com/questions/33743880/what-does-from-future-import-absolute-import-actually-do
+from __builtin__ import * #My interpreter was shirking adding this automatically on the non-generated files. Most shouldn't need this, figure out why on a second pass
 
 import sys
 import os
@@ -27,20 +28,26 @@ import traceback
 from severr_client.models import *
 from six import iteritems
 
-class event_trace_builder(object):
+
+class EventTraceBuilder(object):
     """
     description of class
+
+    All members are classmethods since we instance the stacktrace and we want to keep multiple stack traces seperate.
     """
 
-    def get_event_traces(self):
+    @classmethod
+    def get_event_traces(self, exc_info = None):
         """
         """
 
         trace = Stacktrace()
-        einfo = sys.exc_info()
-        self.add_stack_trace(trace, einfo)
+        if exc_info is None: exc_info = sys.exc_info()
+
+        self.add_stack_trace(trace, exc_info)
         return trace
 
+    @classmethod
     def add_stack_trace(self, trace_list, exc_info=None):
         """
         """
@@ -54,6 +61,7 @@ class event_trace_builder(object):
             newTrace.message = str(value)
         trace_list.append(newTrace)
 
+    @classmethod
     def get_event_tracelines(self, tb):
         """
         """
@@ -69,12 +77,14 @@ class event_trace_builder(object):
         stacklines.append(line)
         return stacklines
 
+    @classmethod
     def format_name(self, name):
         """
         """
 
         raise NotImplementedError("Method not implemented currently.")
 
+    @classmethod
     def is_exc_info_tuple(self, exc_info):
         """
         """
