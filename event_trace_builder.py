@@ -38,7 +38,7 @@ class event_trace_builder(object):
 
         trace = stacktrace()#I don't see it inheriting from any list in the swagger code. Confirm?
         einfo = sys.exc_info()
-        add_stack_trace(self, trace, einfo)
+        self.add_stack_trace(self, trace, einfo)
         return trace
 
     def add_stack_trace(self, trace_list, exc_info=None):
@@ -48,7 +48,7 @@ class event_trace_builder(object):
         if exc_info is None: exc_info = sys.exc_info
         newTrace = inner_stack_trace()
 
-        newTrace.trace_lines = get_event_tracelines(self, exc_info[2])
+        newTrace.trace_lines = self.get_event_tracelines(self, exc_info[2])
         newTrace.type = str(exc_info[0])
         newTrace.message = str(exc_info[1])
         trace_list.append(newTrace)
