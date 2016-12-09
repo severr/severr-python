@@ -128,9 +128,9 @@ class SeverrClient(object):
 
     def async_callback(self, response):
         """
-        Call backmethod for the send_event_async function. Currently outputs nothing, can enable printing.
+        Callback method for the send_event_async function. Currently outputs nothing.
 
-        :param response message returned after the async call is completed.
+        :param response: message returned after the async call is completed.
         """
 
         #print response
@@ -145,6 +145,11 @@ class SeverrClient(object):
 
 
     def fill_defaults(self, app_event):
+        """
+
+        :param app_event:  
+        """
+
         if app_event.api_key is None: app_event.apiKey = self.api_Key
 
         if app_event.context_app_version is None: app_event.context_app_version = self.context_App_Version
@@ -161,4 +166,8 @@ class SeverrClient(object):
 
         if app_event.event_time is None: app_event.event_time = time.gmtime() * 1000  # Confirm if this is correct form of output
         # ANSWER: This is not correct as it doesn't offer millisecond granulatity
+        #http://stackoverflow.com/questions/6999726/how-can-i-convert-a-datetime-object-to-milliseconds-since-epoch-unix-time-in-p
+        #http://stackoverflow.com/questions/18169099/python-get-milliseconds-since-epoch-millisecond-accuracy-not-seconds1000
+        #https://viewsby.wordpress.com/2014/12/05/python-get-epoch-time-stamp-in-milliseconds/
+        #For consideration in opposition of that. The * 100 moves the provided decimial Does this need to be a string? If so, encompass with time.strftime()
         return app_event

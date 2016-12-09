@@ -31,9 +31,9 @@ from six import iteritems
 
 class EventTraceBuilder(object):
     """
-    description of class
+    Methods for storing and returning an error as a Stack object to send out to severr
 
-    All members are classmethods since we instance the stacktrace and we want to keep multiple stack traces seperate.
+    All members methods are @classmethods.
     """
 
     @classmethod
@@ -54,14 +54,15 @@ class EventTraceBuilder(object):
     def add_stack_trace(self, trace_list, exc_info=None):
         """
         """
+
         try:
             if exc_info is None: exc_info = sys.exc_info()
             newTrace = InnerStackTrace()
 
-            type, value, tb = exc_info
+            e_type, value, tb = exc_info
             newTrace.trace_lines = self.get_event_tracelines(tb)
-            newTrace.type = str(type)
-            newTrace.message = str(value)
+            newTrace.type = format_error_name(e_type)
+            newTrace.message = value
             trace_list.append(newTrace)
         finally:
             del exc_info
@@ -75,19 +76,28 @@ class EventTraceBuilder(object):
         st_line = StackTraceLine()
 
         for filename, line, func, text in traceback.extract_tb(tb):
-            st_line.file = str(filename)
+            st_line.file = filename
             st_line.line = line
-            st_line.function = str(func)
+            st_line.function = func
 
         stacklines.append(st_line)
         return stacklines
 
     @classmethod
-    def format_error_name(self, name):
+    def format_error_name(self, error_type):
         """
         """
 
-        raise NotImplementedError("Method not implemented currently.")
+        name = None
+        try:
+            name = error_type.__name__
+        except:
+            #Accessing two underscore properties is frowned upon as bad design, but the above call only work with new style objects,
+            #which inherit directly from object in an explicit in py 2 (py 3 is fine). This covers all objects, including oldstyle objects.
+            #Should cover people making py 2 old objects not inherited from Exception.
+            name = error_type.__class__.__name__
+
+        return name
 
     @classmethod
     def is_exc_info_tuple(self, exc_info):
