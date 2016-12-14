@@ -166,8 +166,8 @@ class SeverrClient(object):
         if app_event.context_data_center is None: app_event.context_data_center = self.context_DataCenter
         if app_event.context_data_center_region is None: app_event.context_data_center_region = self.context_DataCenter_Region
 
-        #dt = datetime.utcnow() - self.EPOCH_CONSTANT #timedelta object
-        if app_event.event_time is None: app_event.event_time = datetime.utcnow() #str(dt.seconds*1000) # Confirm if this is correct form of output
+        dt = datetime.utcnow() - self.EPOCH_CONSTANT #timedelta object
+        if app_event.event_time is None: app_event.event_time = int(dt.seconds*1000) # Confirm if this is correct form of output
         # ANSWER: This is not correct as it doesn't offer millisecond granulatity
         #http://stackoverflow.com/questions/6999726/how-can-i-convert-a-datetime-object-to-milliseconds-since-epoch-unix-time-in-p
         #http://stackoverflow.com/questions/18169099/python-get-milliseconds-since-epoch-millisecond-accuracy-not-seconds1000
