@@ -24,7 +24,6 @@ from __builtin__ import *  # My interpreter was shirking adding this automatical
 import sys
 import os
 import re
-import time
 
 # python 2 and python 3 compatibility library
 from six import iteritems
@@ -34,6 +33,7 @@ from severr_client import EventsApi
 from severr_client.apis import events_api
 from severr_client.models import *
 from event_trace_builder import EventTraceBuilder
+from datetime import datetime, timedelta
 
 
 # http://stackoverflow.com/questions/9252543/importerror-cannot-import-name-x Reformat like the last answer?
@@ -90,6 +90,8 @@ class SeverrClient(object):
     # context_AppOS_Version
     # context_DataCenter
     # context_DataCenter_Region
+
+    EPOCH_CONSTANT = datetime(1970, 1, 1)
 
     def __init__(self, api_key=None, base_path=None, context_app_version=None, context_env_name="development", context_env_version=None,
                  context_env_hostname=None,
@@ -164,7 +166,8 @@ class SeverrClient(object):
         if app_event.context_data_center is None: app_event.context_data_center = self.context_DataCenter
         if app_event.context_data_center_region is None: app_event.context_data_center_region = self.context_DataCenter_Region
 
-        if app_event.event_time is None: app_event.event_time = time.gmtime() * 1000  # Confirm if this is correct form of output
+        #dt = datetime.utcnow() - self.EPOCH_CONSTANT #timedelta object
+        if app_event.event_time is None: app_event.event_time = datetime.utcnow() #str(dt.seconds*1000) # Confirm if this is correct form of output
         # ANSWER: This is not correct as it doesn't offer millisecond granulatity
         #http://stackoverflow.com/questions/6999726/how-can-i-convert-a-datetime-object-to-milliseconds-since-epoch-unix-time-in-p
         #http://stackoverflow.com/questions/18169099/python-get-milliseconds-since-epoch-millisecond-accuracy-not-seconds1000
