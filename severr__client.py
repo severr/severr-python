@@ -19,7 +19,7 @@
 """
 
 from __future__ import absolute_import
-from __builtin__ import *  # My interpreter was shirking adding this automatically on the non-generated files. Most shouldn't need this, figure out why on a second pass
+from __builtin__ import *  #My interpreter was shirking adding this automatically on the non-generated files. Most shouldn't need this, figure out why on a second pass
 
 import sys
 import os
@@ -39,14 +39,14 @@ from datetime import datetime, timedelta
 # http://stackoverflow.com/questions/9252543/importerror-cannot-import-name-x Reformat like the last answer?
 
 
-class Logger(object):
+class Severr(object):
     """
     The public facing class that will log errors.
 
-    A use case would be like:
-    >>>import severr_client
+    A use case is:
+    >>>from severr__client import Severr
     >>>...
-    >>>l = Logger()
+    >>>l = Severr()
     >>>...
     >>>try:
     >>>   ...
@@ -59,13 +59,12 @@ class Logger(object):
         
         """
         #consider a configuration file for later. Removed my personal data for pushes for now.
-        client = SeverrClient()
 
 
         exc_info = sys.exc_info()
         try:
             type, value = exc_info[:2]
-            excevent = client.create_new_app_event(classification, str(type), str(value))
+            excevent = client.create_new_app_event(classification, EventTraceBuilder.format_error_name(type), str(value))
 
             excevent.event_stacktrace = EventTraceBuilder.get_event_traces(exc_info)
             client.send_event_async(excevent)  # use async method when implemented
@@ -148,8 +147,9 @@ class SeverrClient(object):
 
     def fill_defaults(self, app_event):
         """
+        Checks the given app event, and if it each event field is not filled out in a specific case, fill out the the event with the instance defaults.
 
-        :param app_event:  
+        :param app_event:  The app event to fill parameters out.
         """
 
         if app_event.api_key is None: app_event.apiKey = self.api_Key
@@ -166,11 +166,6 @@ class SeverrClient(object):
         if app_event.context_data_center is None: app_event.context_data_center = self.context_DataCenter
         if app_event.context_data_center_region is None: app_event.context_data_center_region = self.context_DataCenter_Region
 
-        dt = datetime.utcnow() - self.EPOCH_CONSTANT #timedelta object
-        if app_event.event_time is None: app_event.event_time = int(dt.seconds*1000) # Confirm if this is correct form of output
-        # ANSWER: This is not correct as it doesn't offer millisecond granulatity
-        #http://stackoverflow.com/questions/6999726/how-can-i-convert-a-datetime-object-to-milliseconds-since-epoch-unix-time-in-p
-        #http://stackoverflow.com/questions/18169099/python-get-milliseconds-since-epoch-millisecond-accuracy-not-seconds1000
-        #https://viewsby.wordpress.com/2014/12/05/python-get-epoch-time-stamp-in-milliseconds/
-        #For consideration in opposition of that. The * 100 moves the provided decimial Does this need to be a string? If so, encompass with time.strftime()
+        TD = datetime.utcnow() - self.EPOCH_CONSTANT #timedelta object
+        if app_event.event_time is None: app_event.event_time = int(TD.total_seconds()*1000)
         return app_event

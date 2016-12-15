@@ -62,7 +62,7 @@ class EventTraceBuilder(object):
             e_type, value, tb = exc_info
             newTrace.trace_lines = self.get_event_tracelines(tb)
             newTrace.type = self.format_error_name(e_type)
-            newTrace.message = value
+            newTrace.message = str(value)
             trace_list.append(newTrace)
         finally:
             del exc_info
@@ -86,16 +86,17 @@ class EventTraceBuilder(object):
     @classmethod
     def format_error_name(self, error_type):
         """
+        Takes in a type object and returns a string "package.typename." It will stringify the type object if it cannot find find the expression.
+
+        :param error_type: The type object to extract the string.
+
+        :return: A string with either the found string or a string representation of the type object if it cannot find the patern above.
         """
 
-        name = None
-        try:
-            name = error_type.__name__
-        except:
-            #Accessing two underscore properties is frowned upon as bad design, but the above call only work with new style objects,
-            #which inherit directly from object in an explicit in py 2 (py 3 is fine). This covers all objects, including oldstyle objects.
-            #Should cover people making py 2 old objects not inherited from Exception.
-            name = error_type.__class__.__name__
+        name = str(error_type)
+        rules = re.compile(r"\w+\.\w+", re.IGNORECASE)
+        found = rules.findall(name)
+        if len(found) > 0: name = found[0]
 
         return name
 
