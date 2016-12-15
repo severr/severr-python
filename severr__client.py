@@ -36,9 +36,6 @@ from event_trace_builder import EventTraceBuilder
 from datetime import datetime, timedelta
 
 
-# http://stackoverflow.com/questions/9252543/importerror-cannot-import-name-x Reformat like the last answer?
-
-
 class Severr(object):
     """
     The public facing class that will log errors.
