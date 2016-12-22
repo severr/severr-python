@@ -32,7 +32,7 @@ from severr_client import ApiClient
 from severr_client import EventsApi
 from severr_client.apis import events_api
 from severr_client.models import *
-from event_trace_builder import EventTraceBuilder
+from event_trace_builder import EventTraceBuilder, Severr_Utils
 from datetime import datetime, timedelta
 
 
@@ -51,20 +51,29 @@ class Severr(object):
     >>>   l.log("Optional Error String")
     """
 
-    def log(self, message=None, classification="Error"):
+    def __init__(self): #Add args
+        raise NotImplementedError
+        
+
+    def log(self, classification = "Error", error_type = None, error_message = None, exc_info = None):
         """
         
         """
         #consider a configuration file for later. Removed my personal data for pushes for now.
 
-
-        exc_info = sys.exc_info()
+        
         try:
-            type, value = exc_info[:2]
-            excevent = client.create_new_app_event(classification, EventTraceBuilder.format_error_name(type), str(value))
+            if exc_info is None: exc_info = sys.exc_info()
+            if exc_info is not False:
+                type, value = exc_info[:2]
+                if error_type is None: Severr_Utils.format_error_name(type)
+                if error_message is None: str(value)
+            excevent = client.create_new_app_event(classification, error_type, error_message)
 
-            excevent.event_stacktrace = EventTraceBuilder.get_event_traces(exc_info)
-            client.send_event_async(excevent)  # use async method when implemented
+            if exc_info is not False:
+                excevent.event_stacktrace = EventTraceBuilder.get_event_traces(exc_info)
+            client.send_event_async(excevent)
+
         finally:
             del exc_info
 
@@ -89,10 +98,12 @@ class SeverrClient(object):
 
     EPOCH_CONSTANT = datetime(1970, 1, 1)
 
-    def __init__(self, api_key=None, base_path=None, context_app_version=None, context_env_name="development", context_env_version=None,
+    def __init__(self, api_key=None, url_path=None, context_app_version=None, context_env_name="development", context_env_version=None,
                  context_env_hostname=None,
                  context_appos=None, context_appos_version=None, context_datacenter=None,
                  context_datacenter_region=None):
+        """
+        """
 
         self.api_Key = api_key
 
@@ -104,10 +115,10 @@ class SeverrClient(object):
         self.context_AppOS_Version = context_appos_version
         self.context_DataCenter = context_datacenter
         self.context_DataCenter_Region = context_datacenter_region
-        if base_path is None:
+        if url_path is None:
             client = ApiClient()
         else:
-            client = ApiClient(base_path)
+            client = ApiClient(url_path)
         self.events_api = EventsApi(client)
 
     def create_new_app_event(self, classification="Error", eventType="unknown",
@@ -145,8 +156,10 @@ class SeverrClient(object):
     def fill_defaults(self, app_event):
         """
         Checks the given app event, and if it each event field is not filled out in a specific case, fill out the the event with the instance defaults.
+        Returns the fully filled out AppEvent object, while also filling out the instance passed in
 
         :param app_event:  The app event to fill parameters out.
+        :return: The given AppEvent object after it is checked and filled out.
         """
 
         if app_event.api_key is None: app_event.apiKey = self.api_Key
@@ -165,4 +178,4 @@ class SeverrClient(object):
 
         TD = datetime.utcnow() - self.EPOCH_CONSTANT #timedelta object
         if app_event.event_time is None: app_event.event_time = int(TD.total_seconds()*1000)
-        return app_event
+        return app_event #Since we're filling out an an instance, probably don't need this.
