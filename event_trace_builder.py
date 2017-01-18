@@ -1,7 +1,7 @@
 ﻿"""
-    Severr Client API
+    Trakerr Client API
 
-    Get your application events and errors to Severr via the *Severr API*.
+    Get your application events and errors to Trakerr via the *Trakerr API*.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -25,13 +25,13 @@ import os
 import re
 import traceback
 
-from severr_client.models import *
+from trakerr_client.models import *
 from six import iteritems
 
 
 class EventTraceBuilder(object):
     """
-    Methods for storing and returning an error as a Stack object to send out to severr
+    Methods for storing and returning an error as a Stack object to send out to trakerr
 
     All members methods are @classmethods.
     """
@@ -61,7 +61,7 @@ class EventTraceBuilder(object):
 
             e_type, value, tb = exc_info
             newTrace.trace_lines = self.get_event_tracelines(tb)
-            newTrace.type = Severr_Utils.format_error_name(e_type)
+            newTrace.type = Trakerr_Utils.format_error_name(e_type)
             newTrace.message = str(value)
             trace_list.append(newTrace)
         finally:
@@ -85,7 +85,7 @@ class EventTraceBuilder(object):
 
 
 
-class Severr_Utils(object):
+class Trakerr_Utils(object):
 
     @classmethod
     def format_error_name(self, error_type):

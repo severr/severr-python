@@ -1,9 +1,9 @@
 # coding: utf-8
 
 """
-    Severr API
+    Trakerr API
 
-    Get your application events and errors to Severr via the *Severr API*.
+    Get your application events and errors to Trakerr via the *Trakerr API*.
 
     OpenAPI spec version: 1.0.0
     
@@ -28,9 +28,9 @@ import os
 import sys
 import unittest
 
-import severr_client
-from severr_client.rest import ApiException
-from severr_client.models.stack_trace_lines import StackTraceLines
+import trakerr_client
+from trakerr_client.rest import ApiException
+from trakerr_client.models.stack_trace_lines import StackTraceLines
 
 
 class TestStackTraceLines(unittest.TestCase):
@@ -46,7 +46,7 @@ class TestStackTraceLines(unittest.TestCase):
         """
         Test StackTraceLines
         """
-        model = severr_client.models.stack_trace_lines.StackTraceLines()
+        model = trakerr_client.models.stack_trace_lines.StackTraceLines()
 
 
 if __name__ == '__main__':

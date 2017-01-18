@@ -24,30 +24,23 @@
 
 from __future__ import absolute_import
 
-import os
-import sys
-import unittest
+# import models into sdk package
+from .models.app_event import AppEvent
+from .models.custom_data import CustomData
+from .models.custom_double_data import CustomDoubleData
+from .models.custom_string_data import CustomStringData
+from .models.error import Error
+from .models.inner_stack_trace import InnerStackTrace
+from .models.stack_trace_line import StackTraceLine
+from .models.stack_trace_lines import StackTraceLines
+from .models.stacktrace import Stacktrace
 
-import trakerr_client
-from trakerr_client.rest import ApiException
-from trakerr_client.models.stacktrace import Stacktrace
+# import apis into sdk package
+from .apis.events_api import EventsApi
 
+# import ApiClient
+from .api_client import ApiClient
 
-class TestStacktrace(unittest.TestCase):
-    """ Stacktrace unit test stubs """
+from .configuration import Configuration
 
-    def setUp(self):
-        pass
-
-    def tearDown(self):
-        pass
-
-    def testStacktrace(self):
-        """
-        Test Stacktrace
-        """
-        model = trakerr_client.models.stacktrace.Stacktrace()
-
-
-if __name__ == '__main__':
-    unittest.main()
+configuration = Configuration()

@@ -1,9 +1,9 @@
 # coding: utf-8
 
 """
-    Severr API
+    Trakerr API
 
-    Get your application events and errors to Severr via the *Severr API*.
+    Get your application events and errors to Trakerr via the *Trakerr API*.
 
     OpenAPI spec version: 1.0.0
     
@@ -28,16 +28,16 @@ import os
 import sys
 import unittest
 
-import severr_client
-from severr_client.rest import ApiException
-from severr_client.apis.events_api import EventsApi
+import trakerr_client
+from trakerr_client.rest import ApiException
+from trakerr_client.apis.events_api import EventsApi
 
 
 class TestEventsApi(unittest.TestCase):
     """ EventsApi unit test stubs """
 
     def setUp(self):
-        self.api = severr_client.apis.events_api.EventsApi()
+        self.api = trakerr_client.apis.events_api.EventsApi()
 
     def tearDown(self):
         pass
@@ -46,7 +46,7 @@ class TestEventsApi(unittest.TestCase):
         """
         Test case for events_post
 
-        Submit an application event or error to Severr
+        Submit an application event or error to Trakerr
         """
         pass
 

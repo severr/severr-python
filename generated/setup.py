@@ -1,9 +1,9 @@
 # coding: utf-8
 
 """
-    Severr API
+    Trakerr API
 
-    Get your application events and errors to Severr via the *Severr API*.
+    Get your application events and errors to Trakerr via the *Trakerr API*.
 
     OpenAPI spec version: 1.0.0
     
@@ -25,7 +25,7 @@
 import sys
 from setuptools import setup, find_packages
 
-NAME = "severr_client"
+NAME = "trakerr_client"
 VERSION = "1.0.0"
 
 # To install the library, run the following
@@ -40,14 +40,14 @@ REQUIRES = ["urllib3 >= 1.15", "six >= 1.10", "certifi", "python-dateutil"]
 setup(
     name=NAME,
     version=VERSION,
-    description="Severr API",
+    description="Trakerr API",
     author_email="",
     url="",
-    keywords=["Swagger", "Severr API"],
+    keywords=["Swagger", "Trakerr API"],
     install_requires=REQUIRES,
     packages=find_packages(),
     include_package_data=True,
     long_description="""\
-    Get your application events and errors to Severr via the *Severr API*.
+    Get your application events and errors to Trakerr via the *Trakerr API*.
     """
 )
